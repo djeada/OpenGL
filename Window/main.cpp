@@ -9,10 +9,18 @@ using namespace std;
 //Compile with g++ -o main version.cpp -lglfw -lGLEW -lGLU -lGL
 
 const int screenWidth = 1024;
-const int screenHeight = 768;
+const int screenHeight = 800;
+
+void glfw_onKey(GLFWwindow* window, int key, int scancode, int action, int mode) {
+	cout << "Key pressed: " << key << endl;
+
+	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
+		glfwSetWindowShouldClose(window, GL_TRUE);
+}
 
 int main(int argc, char* argv[]) {
 
+	// Intialize GLFW 
 	if (!glfwInit()) 
 		exit(EXIT_FAILURE);
 	
@@ -24,7 +32,9 @@ int main(int argc, char* argv[]) {
 	}
 
 	glfwMakeContextCurrent(window);
-	
+		
+	glfwSetKeyCallback(window, glfw_onKey);
+
 	while (!glfwWindowShouldClose(window)) {
 		glViewport(0,0,screenWidth, screenHeight);
 		glClearColor(0,0.5,0.5,1);
