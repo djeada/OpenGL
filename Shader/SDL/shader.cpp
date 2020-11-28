@@ -19,7 +19,7 @@ void Shader::unbind() {
     glUseProgram(0);
 }
 
-GLuint ShaderProgram::getHandle() const {
+GLuint Shader::getHandle() const {
 	return shaderHandle;
 }
 
