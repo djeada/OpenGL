@@ -1,2 +1,2 @@
 # OpenGL
-Tutorials about OpenGL.
+OpenGL tutorial for C++ developers.
