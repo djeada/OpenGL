@@ -3,6 +3,7 @@ OpenGL tutorial for C++ developers.
 
 TODO:
 
+* MATH BEHIND VIEW PROJECTIONS: https://youtu.be/U0_ONQQ5ZNM?si=MMOs9kLFhjM4I6_f
 * REALLY IMPORTANT: https://youtube.com/playlist?list=PLplnkTzzqsZTfYh4UbhLGpI5kGd5oW_Hh
 * https://youtu.be/yRYHly3bl2Q
 * https://youtu.be/_eg5TaIKRnQ
