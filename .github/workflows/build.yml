@@ -1,0 +1,41 @@
+name: Qt OpenGL lessons
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-render:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      LIBGL_ALWAYS_SOFTWARE: "1"
+      QT_QPA_PLATFORM: xcb
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Qt and software OpenGL
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cmake ninja-build g++ qt6-base-dev libqt6opengl6-dev xvfb xauth libgl1-mesa-dri
+      - name: Build the complete course
+        run: |
+          cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release
+          cmake --build build --parallel 2
+      - name: Render every lesson and exercise its controls
+        run: xvfb-run -a -s "-screen 0 1280x1024x24" ctest --test-dir build --output-on-failure
+      - name: Check high DPI framebuffer resizing
+        run: QT_SCALE_FACTOR=2 xvfb-run -a -s "-screen 0 1920x1600x24" ctest --test-dir build -R opengl_10_smoke --output-on-failure
+      - name: Build every lesson outside the repository
+        shell: bash
+        run: |
+          set -euo pipefail
+          for lesson in projects/*; do
+            isolated="$(mktemp -d)"
+            cp -R "$lesson" "$isolated/source"
+            cmake -S "$isolated/source" -B "$isolated/build" -G Ninja -DCMAKE_BUILD_TYPE=Release
+            cmake --build "$isolated/build" --parallel 2
+            rm -rf "$isolated"
+          done
